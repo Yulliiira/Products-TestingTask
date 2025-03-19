@@ -5,60 +5,51 @@ namespace App\Http\Controllers\Application;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+Use App\Models\Category;
 
 class ProductController extends Controller
 {
-    public function index() //список товаров
+    public function index()
     {
         $products = Product::all();
-        
+
         return view('products.index', compact('products'));
     }
 
-    public function create() // форма добавления
+    public function create()
     {
-        return view('products.create');
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
-    public function store(ProductRequest $request) //сохранение нового товара
+    public function store(ProductRequest $request)
     {
-        $product = Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'category' => $request->input('category'),
-        ]);
+        $product = Product::create($request->validated());
 
-        return redirect()->route('product', ['product' => $product->id]);
-
+        return redirect()->route('products.show', $product->id);
     }
 
-    public function show(Product $product) // детальная страница
+    public function show(Product $product)
     {
-        return view('products.show', [
-            'product' => Product::findOrFail($product)
-        ]);
+        return view('products.show', compact('product'));
     }
 
-    public function edit($id) // форма редактирования
+    public function edit(Product $product)
     {
-        return view('products.edit');
+        return view('products.edit', compact('product'));
     }
 
-    public function update(ProductRequest $request, Product $product) // обновление товара
+    public function update(ProductRequest $request, Product $product) 
     {
-        $product->update([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-            'category' => $request->input('category'),
-        ]);
+        $product->update($request->validated());
 
-        return redirect()->route('product', ['product' => $product->id]);
+        return redirect()->route('products.show', $product->id);
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
 
-        return redirect()->route('products');
+        return redirect()->route('products.index');
     }
 }

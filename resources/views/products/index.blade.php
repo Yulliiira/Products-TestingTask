@@ -1,20 +1,37 @@
-<x-layout>
-    <h1>Все товары</h1>
+@extends('components.layout')
 
-    <a href="{{ route('products.index') }}">Товары</a><br>
-    <a href="{{ route('products.create') }}">Добавить новый товар</a>
+@section('title', 'Товары')
 
-    <ul>
-        @foreach ($products as $product)
-            <li>
-                <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
-                <a href="{{ route('products.edit', $product->id) }}">Редактировать</a>
-                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Удалить</button>
-                </form>
-            </li>
-        @endforeach
-    </ul>
-</x-layout>
+@section('content')
+    <h1>Список товаров</h1>
+    <a href="{{ route('products.create') }}" class="btn btn-outline-primary">Добавить товар</a>
+
+    <table class="table mt-2">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Категория</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($products as $product)
+                <tr>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->price }} ₽</td>
+                    <td>{{ $product->category->name ?? 'Нет категории' }}</td>
+                    <td>
+                        <a href="{{ route('products.show', $product) }}" class="btn btn-outline-primary">Просмотр</a>
+                        <a href="{{ route('products.edit', $product) }}" class="btn btn-outline-primary">Редактировать</a>
+                        <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-primary">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endsection
