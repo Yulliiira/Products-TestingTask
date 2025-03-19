@@ -1,14 +1,12 @@
-<x-layout>
+@extends('components.layout')
+
+@section('title', 'Товар')
+
+@section('content')
     <h1>{{ $product->name }}</h1>
-    <p><strong>Цена:</strong> {{ $product->price }}</p>
-    <p><strong>Категория:</strong> {{ $product->category }}</p>
+    <p>{{ $product->description }}</p>
+    <p><strong>Цена:</strong> {{ $product->price }} ₽</p>
+    <p><strong>Категория:</strong> {{ $product->category->name ?? 'Нет категории' }}</p>
 
-    <a href="{{ route('products.edit', $product->id) }}">Редактировать</a>
-
-    <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit">Удалить</button>
-    </form>
-</x-layout>
-
+    <a href="{{ route('products.index') }}" class="btn btn-outline-primary">Назад</a>
+@endsection

@@ -1,4 +1,8 @@
-<x-layout>
+@extends('components.layout')
+
+@section('title', 'Добавить товар')
+
+@section('content')
     <h1>Редактировать товар</h1>
 
     <form action="{{ route('products.update', $product->id) }}" method="POST">
@@ -21,7 +25,7 @@
         </div>
 
         <div>
-            <button type="submit">Обновить</button>
+            <button type="submit" class="btn btn-outline-primary">Обновить</button>
         </div>
     </form>
-</x-layout>
+@endsection
