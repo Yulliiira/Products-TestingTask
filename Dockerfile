@@ -21,6 +21,8 @@ COPY . /var/www/html
 
 RUN composer install --no-dev --optimize-autoloader
 
+RUN chmod +x /var/www/html/wait-for-db.sh
+
 RUN chmod -R 777 storage bootstrap/cache
 
 CMD ["php-fpm"]
