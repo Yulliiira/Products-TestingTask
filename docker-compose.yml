@@ -21,7 +21,7 @@ services:
     container_name: laravel_app
     volumes:
       - .:/var/www/html
-    command: ["/var/www/html/wait-for-db.sh", "sh", "-c", "composer install && php artisan migrate --seed && php-fpm"]
+    command: sh -c "composer install && php artisan migrate --seed && php-fpm"
     depends_on:
       - mysql
     networks:
